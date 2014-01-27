@@ -1,0 +1,31 @@
+import base64
+import urllib2
+#import requests
+import json
+
+def main():
+    url = "http://api.tagtider.net/v1/stations.json"
+    passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    passman.add_password(None, url, "tagtider", "codemocracy")
+    opener = urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman),
+                         urllib2.HTTPDigestAuthHandler(passman))
+    #opener = urllib2.HTTPBasicAuthHandler(passman)
+    urllib2.install_opener(opener)
+    pagehandle = urllib2.urlopen(url)
+    
+    stations = json.load(pagehandle)
+    for station in stations['stations']['station']:
+        print station.name
+#    for station in stations:
+#        print station
+
+#    request = urllib2.Request(url)
+#    auth = base64.encodestring('tagtider:codemocracy').replace('\n', '')
+#    print auth
+#    request.add_header('Authorization', 'Basic ' + auth)
+#    request.add_header('Content-Type', 'application/json')
+#    request.get_method = lambda: 'GET'
+#    print urllib2.urlopen(request, timeout=1).read()
+    
+
+if  __name__ =='__main__':main()
